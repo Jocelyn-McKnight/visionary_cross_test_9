@@ -1,8 +1,7 @@
-
 <!DOCTYPE>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<meta content="charset=UTF-8"/>
+<meta charset="UTF-8"/>
 <title>3DHOP - 3D Heritage Online Presenter</title>
 <!--STYLESHEET-->
 <link type="text/css" rel="stylesheet" href="stylesheet/3dhop.css"/>
@@ -112,19 +111,20 @@ var presenter = null;
 function setup3dhop() {
 	presenter = new Presenter("draw-canvas");
 
+	// Load the .ply model
 	presenter.setScene({
 		meshes: {
-			"mesh_1" : { url: "models/gargo.nxz" }
+			"mesh_1": { url: "models/Raven_Ruthwell_Cross_small.ply", format: "ply" }
 		},
-		modelInstances : {
-			"model_1" : { 
-				mesh  : "mesh_1",
-				color : [0.8, 0.7, 0.75]
+		modelInstances: {
+			"model_1": {
+				mesh: "mesh_1",
+				color: [0.8, 0.7, 0.75]
 			}
 		},
 		trackball: {
-			type : TurntablePanTrackball,
-			trackOptions : {
+			type: TurntablePanTrackball,
+			trackOptions: {
 				startPhi: 35.0,
 				startTheta: 15.0,
 				startDistance: 2.5,
@@ -135,65 +135,42 @@ function setup3dhop() {
 		}
 	});
 
-//--MEASURE--
+	//--MEASURE--
 	presenter._onEndMeasurement = onEndMeasure;
-//--MEASURE--
+	//--MEASURE--
 
-//--POINT PICKING--
+	//--POINT PICKING--
 	presenter._onEndPickingPoint = onEndPick;
-//--POINT PICKING--
+	//--POINT PICKING--
 
-//--SECTIONS--
+	//--SECTIONS--
 	sectiontoolInit();
-//--SECTIONS--
+	//--SECTIONS--
 }
 
 function actionsToolbar(action) {
 	if(action=='home') presenter.resetTrackball();
-//--FULLSCREEN--
 	else if(action=='full'  || action=='full_on') fullscreenSwitch();
-//--FULLSCREEN--
-//--ZOOM--
 	else if(action=='zoomin') presenter.zoomIn();
 	else if(action=='zoomout') presenter.zoomOut();
-//--ZOOM--
-//--LIGHTING--
 	else if(action=='lighting' || action=='lighting_off') { presenter.enableSceneLighting(!presenter.isSceneLightingEnabled()); lightingSwitch(); }
-//--LIGHTING--
-//--LIGHT--
 	else if(action=='light' || action=='light_on') { presenter.enableLightTrackball(!presenter.isLightTrackballEnabled()); lightSwitch(); }
-//--LIGHT--
-//--CAMERA--
 	else if(action=='perspective' || action=='orthographic') { presenter.toggleCameraType(); cameraSwitch(); }
-//--CAMERA--
-//--COLOR--
 	else if(action=='color' || action=='color_on') { presenter.toggleInstanceSolidColor(HOP_ALL, true); colorSwitch(); }
-//--COLOR--
-//--MEASURE--
 	else if(action=='measure' || action=='measure_on') { presenter.enableMeasurementTool(!presenter.isMeasurementToolEnabled()); measureSwitch(); }
-//--MEASURE--
-//--POINT PICKING--
 	else if(action=='pick' || action=='pick_on') { presenter.enablePickpointMode(!presenter.isPickpointModeEnabled()); pickpointSwitch(); }
-//--POINT PICKING--
-//--SCREENSHOT--
 	else if(action=='screenshot') presenter.saveScreenshot();
-//--SCREENSHOT--
-//--SECTIONS--
 	else if(action=='sections' || action=='sections_on') { sectiontoolReset(); sectiontoolSwitch(); }
-//--SECTIONS--
 }
 
 //--MEASURE--
 function onEndMeasure(measure) {
-	// measure.toFixed(2) sets the number of decimals when displaying the measure
-	// depending on the model measure units, use "mm","m","km" or whatever you have
 	$('#measure-output').html(measure.toFixed(2) + "mm"); 
 }
 //--MEASURE--
 
 //--PICKPOINT--
 function onEndPick(point) {
-	// .toFixed(2) sets the number of decimals when displaying the picked point	
 	var x = point[0].toFixed(2);
 	var y = point[1].toFixed(2);
 	var z = point[2].toFixed(2);
@@ -203,7 +180,6 @@ function onEndPick(point) {
 
 $(document).ready(function(){
 	init3dhop();
-
 	setup3dhop();
 });
 </script>
